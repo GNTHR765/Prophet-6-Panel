@@ -118,15 +118,16 @@ void MoogLook::drawToggleButton (Graphics& g, ToggleButton& b, bool, bool)
 {
     auto r = b.getLocalBounds().toFloat();
     const bool on = b.getToggleState();
-    // small chrome toggle switch
-    Rectangle<float> sw (r.getX(), r.getCentreY() - 9.f, 18.f, 18.f);
-    g.setColour (Colour (0xff0c0c0c)); g.fillEllipse (sw);
-    g.setColour (rule); g.drawEllipse (sw, 1.f);
+    // small toggle switch. ON is unmistakable: the switch is lit in the accent colour with its lever up and the label bright;
+    // OFF is a dark switch with the lever down and a dim label
+    Rectangle<float> sw (r.getX() + 1.f, r.getCentreY() - 8.f, 16.f, 16.f);
+    g.setColour (on ? accent : Colour (0xff0c0c0c)); g.fillEllipse (sw);
+    g.setColour (on ? accent.brighter (0.3f) : rule); g.drawEllipse (sw, 1.f);
     const float ly = on ? sw.getY() + 3.f : sw.getBottom() - 3.f;
-    g.setColour (chrome);
-    g.drawLine (sw.getCentreX(), sw.getCentreY(), sw.getCentreX(), ly, 3.f);
-    g.fillEllipse (sw.getCentreX() - 2.5f, ly - 2.5f, 5.f, 5.f);
-    g.setColour (on ? cream : ink.withAlpha (0.75f));
+    g.setColour (on ? Colour (0xff141414) : chrome.withAlpha (0.55f));
+    g.drawLine (sw.getCentreX(), sw.getCentreY(), sw.getCentreX(), ly, 2.5f);
+    g.fillEllipse (sw.getCentreX() - 2.f, ly - 2.f, 4.f, 4.f);
+    g.setColour (on ? cream : ink.withAlpha (0.5f));
     g.setFont (silk (10.5f));
     g.drawText (b.getButtonText().toUpperCase(), r.withTrimmedLeft (23.f).toNearestInt(), Justification::centredLeft, false);
 }
